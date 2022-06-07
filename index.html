@@ -4,9 +4,68 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="style.css" />
-    <script src="script.js" defer></script>
-    <title>Todo App</title>
+    <link rel="stylesheet" href="./normalize.css" />
+    <link rel="stylesheet" href="./style.css" />
+    <script
+      src="https://kit.fontawesome.com/3f76d30d04.js"
+      crossorigin="anonymous"
+    ></script>
+    <script src="./script.js"></script>
+    <title>TODO App</title>
   </head>
-  <body></body>
+  <body>
+    <div class="main-grid">
+      <header class="title">
+        <h1>TO-DO <i class="fa-solid fa-book"></i></h1>
+      </header>
+      <nav class="navigation">
+        <div>
+          <div class="nav-links">
+            <p><i class="fa-solid fa-inbox"></i> Inbox</p>
+            <ul>
+              <li>
+                <span class="filter-name">Today</span>
+                <span class="tasks-count">1</span>
+              </li>
+              <li>
+                <span class="filter-name">Next 7 days</span>
+                <span class="tasks-count">2</span>
+              </li>
+              <li>
+                <span class="filter-name">Important</span>
+                <span class="tasks-count">3</span>
+              </li>
+              <li>
+                <span class="filter-name">All</span>
+                <span class="tasks-count">4</span>
+              </li>
+            </ul>
+          </div>
+          <div class="nav-links">
+            <p><i class="fa-solid fa-list-check"></i> Projects</p>
+            <ul>
+              <li>
+                <span class="filter-name">Gym</span>
+                <span class="tasks-count">10</span>
+              </li>
+              <li>
+                <span class="filter-name">Study</span>
+                <span class="tasks-count">11</span>
+              </li>
+              <li>
+                <span class="filter-name">Work</span>
+                <span class="tasks-count">20</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <button type="button">&#43;</button>
+      </nav>
+      <main class="tasks-container"></main>
+      <footer class="footer">
+        <i class="fa-brands fa-github"></i>
+        <span>https://github.com/CCMPacheco</span>
+      </footer>
+    </div>
+  </body>
 </html>

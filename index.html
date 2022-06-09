@@ -127,5 +127,66 @@
         <span>https://github.com/CCMPacheco</span>
       </footer>
     </div>
+    <div class="modal details">
+      <div class="details-header">
+        <h3>get mail</h3>
+        <button type="button" class="icon">&#10005;</button>
+      </div>
+      <div class="details-grid">
+        <span class="details-category">Project:</span>
+        <span class="details-info">General</span>
+      </div>
+      <div class="details-grid">
+        <span class="details-category">Priority:</span>
+        <span class="details-info">Low</span>
+      </div>
+      <div class="details-grid">
+        <span class="details-category">Due date:</span>
+        <span class="details-info">June 8th, 2022</span>
+      </div>
+      <div class="details-grid">
+        <span class="details-category">Details:</span>
+        <span class="details-info">check mail from bank regarding loan</span>
+      </div>
+    </div>
+    <div class="modal edit">
+      <form action="">
+        <div class="edit-header">
+          <input
+            type="text"
+            name=""
+            id=""
+            placeholder="Title:"
+            autocomplete="off"
+          />
+          <button type="button" class="icon">&#10005;</button>
+        </div>
+        <textarea
+          name=""
+          id=""
+          cols=""
+          rows="10"
+          placeholder="Details:"
+          autocomplete="off"
+        ></textarea>
+        <div class="edit-date">
+          <label for="due-date">Due Date: </label>
+          <div>
+            <input type="date" name="" id="due-date" />
+          </div>
+        </div>
+        <div class="edit-radio">
+          <span>Priority: </span>
+          <div class="btn-radio">
+            <button type="button" class="btn btn-low">LOW</button>
+            <button type="button" class="btn btn-medium">MEDIUM</button>
+            <button type="button" class="btn btn-high">HIGH</button>
+          </div>
+        </div>
+        <button type="button" class="btn">CONFIRM EDIT</button>
+      </form>
+    </div>
+    <div class="modal add active"></div>
+    <div class="overlay active"></div>
   </body>
 </html>

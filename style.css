@@ -400,6 +400,8 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 
 .edit > form > button {
   padding: 0.5em;
+  align-self: center;
+  width: 200px;
 }
 
 .btn-low {
@@ -427,4 +429,55 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 
 .btn-high:hover {
   background-color: var(--clr-high);
+}
+
+.modal.add {
+  padding: 0;
+  min-height: 439.83px;
+}
+
+.add-grid {
+  display: grid;
+  grid-template-columns: 110px auto;
+}
+
+.add-title {
+  grid-column: 1 / -1;
+  background-color: var(--clr-accent);
+  color: var(--clr-light);
+  display: flex;
+  justify-content: space-between;
+  padding: 0.5em 1em;
+}
+
+.add-title > button {
+  color: var(--clr-light);
+  font-size: var(--fs-large);
+}
+
+.add > .nav-links {
+  background-color: var(--clr-lightgray);
+}
+
+.add .nav-links {
+  padding: 1em 0.5em;
+  font-weight: 300;
+  font-size: var(--fs-regular);
+}
+
+.add-main > form {
+  background-color: var(--clr-light);
+  padding: 1em;
+}
+
+.add-main > form input {
+  background-color: var(--clr-light);
+}
+
+.add-main > form > textarea {
+  background-color: var(--clr-light);
+}
+
+.add-project {
+  margin-top: 289px;
 }

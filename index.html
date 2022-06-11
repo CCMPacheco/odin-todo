@@ -186,7 +186,76 @@
         <button type="button" class="btn">CONFIRM EDIT</button>
       </form>
     </div>
-    <div class="modal add active"></div>
-    <div class="overlay active"></div>
+    <div class="modal add">
+      <div class="add-grid">
+        <div class="add-title">
+          <h2>Create a new...</h2>
+          <button type="button" class="icon">&#10005;</button>
+        </div>
+        <div class="nav-links">
+          <ul>
+            <li>
+              <span class="filter-name">TO - DO</span>
+            </li>
+            <li>
+              <span class="filter-name">PROJECT</span>
+            </li>
+          </ul>
+        </div>
+
+        <!-- <div class="edit add-main">
+          <form action="">
+            <div class="edit-header">
+              <input
+                type="text"
+                name=""
+                id=""
+                placeholder="Title:"
+                autocomplete="off"
+              />
+            </div>
+            <button type="button" class="btn add-project">ADD PROJECT</button>
+          </form>
+        </div> -->
+
+        <div class="edit add-main">
+          <form action="">
+            <div class="edit-header">
+              <input
+                type="text"
+                name=""
+                id=""
+                placeholder="Title:"
+                autocomplete="off"
+              />
+            </div>
+            <textarea
+              name=""
+              id=""
+              cols=""
+              rows="10"
+              placeholder="Details:"
+              autocomplete="off"
+            ></textarea>
+            <div class="edit-date">
+              <label for="due-date">Due Date: </label>
+              <div>
+                <input type="date" name="" id="due-date" />
+              </div>
+            </div>
+            <div class="edit-radio">
+              <span>Priority: </span>
+              <div class="btn-radio">
+                <button type="button" class="btn btn-low">LOW</button>
+                <button type="button" class="btn btn-medium">MEDIUM</button>
+                <button type="button" class="btn btn-high">HIGH</button>
+              </div>
+            </div>
+            <button type="button" class="btn">ADD TO DO</button>
+          </form>
+        </div>
+      </div>
+    </div>
+    <div class="overlay"></div>
   </body>
 </html>

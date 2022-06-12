@@ -49,6 +49,15 @@ body {
   align-items: center;
   font-weight: 900;
   letter-spacing: 5px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.title > button {
+  color: var(--clr-light);
+  font-size: var(--fs-large);
+  transform: scale(0);
+  transition: transform 150ms ease-in-out;
 }
 
 .navigation {
@@ -480,4 +489,39 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 
 .add-project {
   margin-top: 289px;
+}
+
+@media screen and (max-width: 610px) {
+  .title > button {
+    transform: scale(1);
+  }
+
+  .navigation {
+    display: none;
+  }
+
+  .main-grid {
+    grid-template-columns: auto;
+    grid-template-areas:
+      "title title"
+      "main main"
+      "footer footer";
+  }
+}
+
+@media screen and (min-width: 1200px) {
+  body {
+    width: 100vw;
+    background: linear-gradient(
+      90deg,
+      rgb(0, 36, 21) 0%,
+      var(--clr-contrast) 50%,
+      rgb(0, 36, 21) 100%
+    );
+  }
+
+  .main-grid {
+    max-width: 1200px;
+    margin: auto;
+  }
 }

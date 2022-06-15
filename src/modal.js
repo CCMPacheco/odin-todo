@@ -168,9 +168,17 @@ function createAddModal() {
   const divMain = document.createElement("div");
   divMain.classList.add("edit");
   divMain.classList.add("add-main");
+  divMain.dataset.editMain = ``;
   divGrid.appendChild(divMain);
 
   return modal;
+}
+
+function createOverlay() {
+  const overlay = document.createElement("div");
+  overlay.classList.add("overlay");
+
+  return overlay;
 }
 
 function createDetailsDiv(category, info) {
@@ -197,6 +205,7 @@ function loadModals() {
   body.appendChild(createDetailsModal());
   body.appendChild(createEditModal());
   body.appendChild(createAddModal());
+  body.appendChild(createOverlay());
 }
 
 export default loadModals;

@@ -1,4 +1,5 @@
 import createListItem from "./listitem.js";
+import { openAdd } from "./index";
 
 function createHeader() {
   const header = document.createElement("div");
@@ -25,6 +26,7 @@ function createNavigation() {
   nav.appendChild(divContainer);
 
   const button = document.createElement("button");
+  button.dataset.openAdd = ``;
   button.innerHTML = `&#43;`;
   nav.appendChild(button);
 
@@ -56,9 +58,7 @@ function createNavigation() {
   ulProjects.dataset.projectsList = ``;
   divProjects.appendChild(ulProjects);
 
-  // ulProjects.appendChild(createListItem("Gym", 10));
-  // ulProjects.appendChild(createListItem("Study", 11));
-  // ulProjects.appendChild(createListItem("Work", 20));
+  openAdd(button);
 
   return nav;
 }

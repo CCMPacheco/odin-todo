@@ -1,27 +1,32 @@
+import { closeDetails, closeEdit, closeAdd } from "./index";
+
 function createDetailsModal() {
   const modal = document.createElement("div");
   modal.classList.add("modal");
   modal.classList.add("details");
+  modal.dataset.modalDetails = ``;
 
   const divHeader = document.createElement("div");
   divHeader.classList.add("details-header");
   modal.appendChild(divHeader);
 
   const h3 = document.createElement("h3");
-  h3.textContent = `get mail`;
+  h3.textContent = ``;
 
   const button = document.createElement("button");
   button.classList.add("icon");
+  button.dataset.closeDetails = ``;
+  button.setAttribute("type", "button");
   button.innerHTML = `&#10005;`;
 
   divHeader.appendChild(h3);
   divHeader.appendChild(button);
-  modal.appendChild(createDetailsDiv("Project:", "General"));
-  modal.appendChild(createDetailsDiv("Priority:", "Low"));
-  modal.appendChild(createDetailsDiv("Due date:", "June 8th, 2022"));
-  modal.appendChild(
-    createDetailsDiv("Details:", "check mail from bank regarding loan")
-  );
+  modal.appendChild(createDetailsDiv("Project:", ""));
+  modal.appendChild(createDetailsDiv("Priority:", ""));
+  modal.appendChild(createDetailsDiv("Due date:", ""));
+  modal.appendChild(createDetailsDiv("Details:", ""));
+
+  closeDetails(button);
 
   return modal;
 }
@@ -30,6 +35,7 @@ function createEditModal() {
   const modal = document.createElement("div");
   modal.classList.add("modal");
   modal.classList.add("edit");
+  modal.dataset.modalEdit = ``;
 
   const form = document.createElement("form");
   modal.appendChild(form);
@@ -47,6 +53,8 @@ function createEditModal() {
 
   const closeButton = document.createElement("button");
   closeButton.classList.add("icon");
+  closeButton.dataset.closeEdit = ``;
+  closeButton.setAttribute("type", "button");
   closeButton.innerHTML = `&#10005;`;
 
   divHeader.appendChild(inputTitle);
@@ -95,16 +103,19 @@ function createEditModal() {
   const lowBtn = document.createElement("button");
   lowBtn.classList.add("btn");
   lowBtn.classList.add("btn-low");
+  lowBtn.setAttribute("type", "button");
   lowBtn.textContent = `LOW`;
 
   const mediumBtn = document.createElement("button");
   mediumBtn.classList.add("btn");
   mediumBtn.classList.add("btn-medium");
+  mediumBtn.setAttribute("type", "button");
   mediumBtn.textContent = `MEDIUM`;
 
   const highBtn = document.createElement("button");
   highBtn.classList.add("btn");
   highBtn.classList.add("btn-high");
+  highBtn.setAttribute("type", "button");
   highBtn.textContent = `HIGH`;
 
   divBtnRadio.appendChild(lowBtn);
@@ -113,8 +124,11 @@ function createEditModal() {
 
   const editBtn = document.createElement("button");
   editBtn.classList.add("btn");
+  editBtn.setAttribute("type", "button");
   editBtn.textContent = `CONFIRM EDIT`;
   form.appendChild(editBtn);
+
+  closeEdit(closeButton);
 
   return modal;
 }
@@ -123,6 +137,7 @@ function createAddModal() {
   const modal = document.createElement("div");
   modal.classList.add("modal");
   modal.classList.add("add");
+  modal.dataset.modalAdd = ``;
 
   const divGrid = document.createElement("div");
   divGrid.classList.add("add-grid");
@@ -137,6 +152,8 @@ function createAddModal() {
 
   const closeButton = document.createElement("button");
   closeButton.classList.add("icon");
+  closeButton.dataset.closeAdd = ``;
+  closeButton.setAttribute("type", "button");
   closeButton.innerHTML = `&#10005;`;
 
   divTitle.appendChild(h2);
@@ -168,8 +185,10 @@ function createAddModal() {
   const divMain = document.createElement("div");
   divMain.classList.add("edit");
   divMain.classList.add("add-main");
-  divMain.dataset.editMain = ``;
+  divMain.dataset.addMain = ``;
   divGrid.appendChild(divMain);
+
+  closeAdd(closeButton);
 
   return modal;
 }
@@ -177,6 +196,7 @@ function createAddModal() {
 function createOverlay() {
   const overlay = document.createElement("div");
   overlay.classList.add("overlay");
+  overlay.dataset.overlay = ``;
 
   return overlay;
 }

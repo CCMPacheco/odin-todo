@@ -12,12 +12,7 @@ function createAddToDo() {
   inputTitle.setAttribute("placeholder", "Title:");
   inputTitle.setAttribute("autocomplete", "off");
 
-  const closeButton = document.createElement("button");
-  closeButton.classList.add("icon");
-  closeButton.innerHTML = `&#10005;`;
-
   divHeader.appendChild(inputTitle);
-  divHeader.appendChild(closeButton);
 
   const textarea = document.createElement("textarea");
   textarea.setAttribute("name", "");
@@ -62,16 +57,19 @@ function createAddToDo() {
   const lowBtn = document.createElement("button");
   lowBtn.classList.add("btn");
   lowBtn.classList.add("btn-low");
+  lowBtn.setAttribute("type", "button");
   lowBtn.textContent = `LOW`;
 
   const mediumBtn = document.createElement("button");
   mediumBtn.classList.add("btn");
   mediumBtn.classList.add("btn-medium");
+  mediumBtn.setAttribute("type", "button");
   mediumBtn.textContent = `MEDIUM`;
 
   const highBtn = document.createElement("button");
   highBtn.classList.add("btn");
   highBtn.classList.add("btn-high");
+  highBtn.setAttribute("type", "button");
   highBtn.textContent = `HIGH`;
 
   divBtnRadio.appendChild(lowBtn);
@@ -80,6 +78,7 @@ function createAddToDo() {
 
   const editBtn = document.createElement("button");
   editBtn.classList.add("btn");
+  editBtn.setAttribute("type", "button");
   editBtn.textContent = `ADD TO DO`;
   form.appendChild(editBtn);
 
@@ -87,7 +86,7 @@ function createAddToDo() {
 }
 
 function renderAddToDo() {
-  const main = document.querySelector("[data-edit-main]");
+  const main = document.querySelector("[data-add-main]");
   main.textContent = ``;
   main.appendChild(createAddToDo());
 }

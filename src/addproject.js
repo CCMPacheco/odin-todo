@@ -2,7 +2,8 @@ function createAddProject() {
   const form = document.createElement("form");
 
   const div = document.createElement("edit-header");
-  form.appendChild(form);
+  div.classList.add("edit-header");
+  form.appendChild(div);
 
   const input = document.createElement("input");
   input.setAttribute("type", "text");
@@ -15,6 +16,7 @@ function createAddProject() {
   const button = document.createElement("button");
   button.classList.add("btn");
   button.classList.add("add-project");
+  button.setAttribute("type", "button");
   button.textContent = `ADD PROJECT`;
   form.appendChild(button);
 
@@ -22,7 +24,7 @@ function createAddProject() {
 }
 
 function renderAddProject() {
-  const main = document.querySelector("[data-edit-main]");
+  const main = document.querySelector("[data-add-main]");
   main.textContent = ``;
   main.appendChild(createAddProject());
 }

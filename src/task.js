@@ -1,3 +1,5 @@
+import { openDetails, openEdit } from "./index";
+
 function createTask(id, title, date, priority) {
   const div = document.createElement("div");
   div.classList.add("task");
@@ -25,6 +27,8 @@ function createTask(id, title, date, priority) {
 
   const buttonDetails = document.createElement("button");
   buttonDetails.classList.add("btn");
+  buttonDetails.dataset.openDetails = ``;
+  buttonDetails.setAttribute("type", "button");
   buttonDetails.textContent = `DETAILS`;
 
   const spanDate = document.createElement("span");
@@ -33,16 +37,21 @@ function createTask(id, title, date, priority) {
 
   const buttonEdit = document.createElement("button");
   buttonEdit.classList.add("icon");
+  buttonEdit.setAttribute("type", "button");
   buttonEdit.innerHTML = `<i class="fa-solid fa-pen-to-square"></i>`;
 
   const buttonDelete = document.createElement("button");
   buttonDelete.classList.add("icon");
+  buttonDelete.setAttribute("type", "button");
   buttonDelete.innerHTML = `<i class="fa-solid fa-trash-can"></i>`;
 
   spanSettings.appendChild(buttonDetails);
   spanSettings.appendChild(spanDate);
   spanSettings.appendChild(buttonEdit);
   spanSettings.appendChild(buttonDelete);
+
+  openDetails(buttonDetails);
+  openEdit(buttonEdit);
 
   return div;
 }

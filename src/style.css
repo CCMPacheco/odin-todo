@@ -469,7 +469,7 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 }
 
 .add .nav-links {
-  padding: 1em 0.5em;
+  padding: 1em 0.4em;
   font-weight: 300;
   font-size: var(--fs-regular);
 }
@@ -488,7 +488,14 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 }
 
 .add-project {
-  margin-top: 289px;
+  margin-top: 288px;
+}
+
+.filter-name.active {
+  font-weight: 700;
+  font-size: var(--fs-regular);
+  letter-spacing: 1px;
+  color: var(--clr-accent-dark);
 }
 
 @media screen and (max-width: 610px) {
@@ -497,7 +504,17 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   }
 
   .navigation {
-    display: none;
+    position: fixed;
+    height: 100vh;
+    width: 250px;
+    z-index: 100;
+    top: 0;
+    right: 0;
+    transform: scaleX(0);
+  }
+
+  .navigation.active {
+    transform: scaleX(1);
   }
 
   .main-grid {
@@ -506,6 +523,12 @@ input[type="date"]::-webkit-calendar-picker-indicator {
       "title title"
       "main main"
       "footer footer";
+  }
+}
+
+@media screen and (max-width: 762px) {
+  .modal {
+    width: 95vw;
   }
 }
 

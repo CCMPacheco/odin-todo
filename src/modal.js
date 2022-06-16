@@ -1,4 +1,4 @@
-import { closeDetails, closeEdit, closeAdd } from "./index";
+import { closeDetails, closeEdit, closeAdd, closeNavigation } from "./index";
 
 function createDetailsModal() {
   const modal = document.createElement("div");
@@ -171,6 +171,8 @@ function createAddModal() {
 
   const spanToDo = document.createElement("span");
   spanToDo.classList.add("filter-name");
+  spanToDo.classList.add("active");
+  spanToDo.dataset.createAddTodo = ``;
   spanToDo.textContent = `TO - DO`;
   liToDo.appendChild(spanToDo);
 
@@ -179,6 +181,7 @@ function createAddModal() {
 
   const spanProject = document.createElement("span");
   spanProject.classList.add("filter-name");
+  spanProject.dataset.createAddProject = ``;
   spanProject.textContent = `PROJECT`;
   liProject.appendChild(spanProject);
 
@@ -197,6 +200,8 @@ function createOverlay() {
   const overlay = document.createElement("div");
   overlay.classList.add("overlay");
   overlay.dataset.overlay = ``;
+
+  closeNavigation(overlay);
 
   return overlay;
 }

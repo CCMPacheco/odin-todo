@@ -1,5 +1,5 @@
 import createListItem from "./listitem.js";
-import { openAdd } from "./index";
+import { openAdd, openNavigation } from "./index";
 
 function createHeader() {
   const header = document.createElement("div");
@@ -15,12 +15,15 @@ function createHeader() {
   header.appendChild(h1);
   header.appendChild(button);
 
+  openNavigation(button);
+
   return header;
 }
 
 function createNavigation() {
   const nav = document.createElement("nav");
   nav.classList.add("navigation");
+  nav.dataset.navigation = ``;
 
   const divContainer = document.createElement("div");
   nav.appendChild(divContainer);

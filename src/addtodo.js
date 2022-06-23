@@ -1,3 +1,5 @@
+import { handleCreateTask, selectPriority } from "./index";
+
 function createAddToDo() {
   const form = document.createElement("form");
 
@@ -81,6 +83,17 @@ function createAddToDo() {
   editBtn.setAttribute("type", "button");
   editBtn.textContent = `ADD TO DO`;
   form.appendChild(editBtn);
+
+  selectPriority(lowBtn, mediumBtn, highBtn);
+  handleCreateTask(
+    editBtn,
+    inputTitle,
+    textarea,
+    inputDate,
+    lowBtn,
+    mediumBtn,
+    highBtn
+  );
 
   return form;
 }

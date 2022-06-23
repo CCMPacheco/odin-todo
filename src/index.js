@@ -6,6 +6,7 @@ import renderTask from "./task.js";
 import renderProject from "./project.js";
 import renderAddToDo from "./addtodo.js";
 import renderAddProject from "./addproject.js";
+import { format, parseISO } from "date-fns";
 
 const LOCAL_STORAGE_PROJECT_KEY = "project.lists";
 const LOCAL_STORAGE_LIST_KEY = "task.lists";
@@ -40,6 +41,65 @@ function save() {
   localStorage.setItem(LOCAL_STORAGE_LIST_KEY, JSON.stringify(tasksList));
 }
 
+function handleCreateTask(button, title, details, date, low, medium, high) {
+  button.addEventListener("click", (e) => {
+    e.preventDefault();
+    const regex = /^\s*$/;
+
+    if (title.value === "") return;
+    if (regex.test(title.value)) return;
+    if (date.value === "") return;
+
+    const idTask = Date.now().toString();
+    const task = title.value.trim();
+    const projectName = "General";
+    const description = details.value.trim();
+    const dueDate = date.value;
+    const formatDate = format(parseISO(dueDate), "MMM dd");
+    let priorityTask = "";
+
+    if (low.classList.contains("active")) {
+      priorityTask = "low-priority";
+    }
+
+    if (medium.classList.contains("active")) {
+      priorityTask = "medium-priority";
+    }
+
+    if (high.classList.contains("active")) {
+      priorityTask = "high-priority";
+    }
+
+    if (priorityTask === "") return;
+
+    tasksList.push({
+      id: idTask,
+      title: task,
+      project: projectName,
+      priority: priorityTask,
+      date: dueDate,
+      details: description,
+    });
+
+    save();
+    renderTask(idTask, task, formatDate, priorityTask);
+    closeAddModal();
+  });
+}
+
+function renderTasksList() {
+  for (let i = 0; i < tasksList.length; i++) {
+    if (tasksList[i].id) {
+      renderTask(
+        tasksList[i].id,
+        tasksList[i].title,
+        tasksList[i].date,
+        tasksList[i].priority
+      );
+    }
+  }
+}
+
 function createProject(button, title) {
   button.addEventListener("click", (e) => {
     e.preventDefault();
@@ -56,6 +116,7 @@ function createProject(button, title) {
     save();
     renderProject(project, initial);
     closeAddModal();
+    handleActiveLink();
   });
 }
 
@@ -91,6 +152,29 @@ function setActiveLink(link) {
   });
 
   link.classList.add("active");
+}
+
+function selectPriority(btnLow, btnMedium, btnHigh) {
+  btnLow.addEventListener("click", () => {
+    btnLow.classList.remove("active");
+    btnMedium.classList.remove("active");
+    btnHigh.classList.remove("active");
+    btnLow.classList.add("active");
+  });
+
+  btnMedium.addEventListener("click", () => {
+    btnLow.classList.remove("active");
+    btnMedium.classList.remove("active");
+    btnHigh.classList.remove("active");
+    btnMedium.classList.add("active");
+  });
+
+  btnHigh.addEventListener("click", () => {
+    btnLow.classList.remove("active");
+    btnMedium.classList.remove("active");
+    btnHigh.classList.remove("active");
+    btnHigh.classList.add("active");
+  });
 }
 
 function openNavigation(btn) {
@@ -204,9 +288,7 @@ function initialize() {
   loadHome();
   loadModals();
   renderProjectsList();
-  renderTask("task-1", "get mail", "June 8th", "medium-priority");
-  renderTask("task-2", "read cote", "Aug 12nd", "low-priority");
-  renderTask("task-3", "learn react", "Dec 31st", "high-priority");
+  renderTasksList();
   handleActiveLink(document.querySelector("[data-filter-nav]"));
 }
 
@@ -222,4 +304,6 @@ export {
   closeAdd,
   closeNavigation,
   createProject,
+  handleCreateTask,
+  selectPriority,
 };

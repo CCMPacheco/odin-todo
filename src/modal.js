@@ -1,4 +1,10 @@
-import { closeDetails, closeEdit, closeAdd, closeNavigation } from "./index";
+import {
+  closeDetails,
+  closeEdit,
+  closeAdd,
+  closeNavigation,
+  selectPriority,
+} from "./index";
 
 function createDetailsModal() {
   const modal = document.createElement("div");
@@ -129,6 +135,7 @@ function createEditModal() {
   form.appendChild(editBtn);
 
   closeEdit(closeButton);
+  selectPriority(lowBtn, mediumBtn, highBtn);
 
   return modal;
 }

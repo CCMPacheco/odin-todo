@@ -418,8 +418,10 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   color: var(--clr-low);
 }
 
-.btn-low:hover {
+.btn-low:hover,
+.btn-low.active {
   background-color: var(--clr-low);
+  color: var(--clr-light);
 }
 
 .btn-medium {
@@ -427,8 +429,10 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   color: var(--clr-medium);
 }
 
-.btn-medium:hover {
+.btn-medium:hover,
+.btn-medium.active {
   background-color: var(--clr-medium);
+  color: var(--clr-light);
 }
 
 .btn-high {
@@ -436,8 +440,10 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   color: var(--clr-high);
 }
 
-.btn-high:hover {
+.btn-high:hover,
+.btn-high.active {
   background-color: var(--clr-high);
+  color: var(--clr-light);
 }
 
 .modal.add {

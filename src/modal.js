@@ -4,6 +4,7 @@ import {
   closeAdd,
   closeNavigation,
   selectPriority,
+  handleEdit,
 } from "./index";
 
 function createDetailsModal() {
@@ -17,6 +18,7 @@ function createDetailsModal() {
   modal.appendChild(divHeader);
 
   const h3 = document.createElement("h3");
+  h3.dataset.detailsTitle = ``;
   h3.textContent = ``;
 
   const button = document.createElement("button");
@@ -27,10 +29,12 @@ function createDetailsModal() {
 
   divHeader.appendChild(h3);
   divHeader.appendChild(button);
-  modal.appendChild(createDetailsDiv("Project:", ""));
-  modal.appendChild(createDetailsDiv("Priority:", ""));
-  modal.appendChild(createDetailsDiv("Due date:", ""));
-  modal.appendChild(createDetailsDiv("Details:", ""));
+  modal.appendChild(createDetailsDiv("data-details-project", "Project:", ""));
+  modal.appendChild(createDetailsDiv("data-details-priority", "Priority:", ""));
+  modal.appendChild(createDetailsDiv("data-details-date", "Due date:", ""));
+  modal.appendChild(
+    createDetailsDiv("data-details-description", "Details:", "")
+  );
 
   closeDetails(button);
 
@@ -56,6 +60,7 @@ function createEditModal() {
   inputTitle.setAttribute("id", "");
   inputTitle.setAttribute("placeholder", "Title:");
   inputTitle.setAttribute("autocomplete", "off");
+  inputTitle.dataset.editTitle = ``;
 
   const closeButton = document.createElement("button");
   closeButton.classList.add("icon");
@@ -73,6 +78,7 @@ function createEditModal() {
   textarea.setAttribute("rows", "10");
   textarea.setAttribute("placeholder", "Details:");
   textarea.setAttribute("autocomplete", "off");
+  textarea.dataset.editDescription = ``;
   form.appendChild(textarea);
 
   const divDate = document.createElement("div");
@@ -89,6 +95,7 @@ function createEditModal() {
   inputDate.setAttribute("type", "date");
   inputDate.setAttribute("name", "");
   inputDate.setAttribute("id", "due-date");
+  inputDate.dataset.editDate = ``;
   divInputDate.appendChild(inputDate);
 
   divDate.appendChild(label);
@@ -110,18 +117,21 @@ function createEditModal() {
   lowBtn.classList.add("btn");
   lowBtn.classList.add("btn-low");
   lowBtn.setAttribute("type", "button");
+  lowBtn.dataset.editLow = ``;
   lowBtn.textContent = `LOW`;
 
   const mediumBtn = document.createElement("button");
   mediumBtn.classList.add("btn");
   mediumBtn.classList.add("btn-medium");
   mediumBtn.setAttribute("type", "button");
+  mediumBtn.dataset.editMedium = ``;
   mediumBtn.textContent = `MEDIUM`;
 
   const highBtn = document.createElement("button");
   highBtn.classList.add("btn");
   highBtn.classList.add("btn-high");
   highBtn.setAttribute("type", "button");
+  highBtn.dataset.editHigh = ``;
   highBtn.textContent = `HIGH`;
 
   divBtnRadio.appendChild(lowBtn);
@@ -131,11 +141,21 @@ function createEditModal() {
   const editBtn = document.createElement("button");
   editBtn.classList.add("btn");
   editBtn.setAttribute("type", "button");
+  editBtn.dataset.editConfirm = ``;
   editBtn.textContent = `CONFIRM EDIT`;
   form.appendChild(editBtn);
 
   closeEdit(closeButton);
   selectPriority(lowBtn, mediumBtn, highBtn);
+  handleEdit(
+    editBtn,
+    inputTitle,
+    textarea,
+    inputDate,
+    lowBtn,
+    mediumBtn,
+    highBtn
+  );
 
   return modal;
 }
@@ -213,7 +233,7 @@ function createOverlay() {
   return overlay;
 }
 
-function createDetailsDiv(category, info) {
+function createDetailsDiv(data, category, info) {
   const div = document.createElement("div");
   div.classList.add("details-grid");
 
@@ -223,6 +243,7 @@ function createDetailsDiv(category, info) {
 
   const spanInfo = document.createElement("span");
   spanInfo.classList.add("details-info");
+  spanInfo.setAttribute(`${data}`, "");
   spanInfo.textContent = info;
 
   div.appendChild(spanCategory);

@@ -353,6 +353,7 @@ body {
 .details-info {
   font-weight: 400;
   color: var(--clr-accent-dark);
+  padding-bottom: 0.6em;
 }
 
 .edit > form {

@@ -1,6 +1,6 @@
-import { openDetails, openEdit } from "./index";
+import { openDetails, openEdit, handleChecked, removeTask } from "./index";
 
-function createTask(id, title, date, priority) {
+function createTask(id, title, date, priority, completed) {
   const div = document.createElement("div");
   div.classList.add("task");
   div.classList.add(priority);
@@ -12,6 +12,7 @@ function createTask(id, title, date, priority) {
   const input = document.createElement("input");
   input.setAttribute("type", "checkbox");
   input.setAttribute("id", id);
+  input.checked = completed;
 
   const label = document.createElement("label");
   label.setAttribute("for", id);
@@ -24,6 +25,12 @@ function createTask(id, title, date, priority) {
   const spanSettings = document.createElement("span");
   spanSettings.classList.add("settings");
   div.appendChild(spanSettings);
+
+  if (completed) {
+    spanSettings.style.opacity = `0.5`;
+  } else {
+    spanSettings.style.opacity = `1`;
+  }
 
   const buttonDetails = document.createElement("button");
   buttonDetails.classList.add("btn");
@@ -50,16 +57,18 @@ function createTask(id, title, date, priority) {
   spanSettings.appendChild(buttonEdit);
   spanSettings.appendChild(buttonDelete);
 
+  removeTask(buttonDelete);
+  handleChecked(input);
   openDetails(buttonDetails);
   openEdit(buttonEdit);
 
   return div;
 }
 
-function renderTask(id, title, date, priority) {
+function renderTask(id, title, date, priority, completed) {
   const main = document.querySelector(".tasks-container");
 
-  main.appendChild(createTask(id, title, date, priority));
+  main.appendChild(createTask(id, title, date, priority, completed));
 }
 
 export default renderTask;

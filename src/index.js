@@ -10,13 +10,22 @@ import { format, parseISO } from "date-fns";
 
 const LOCAL_STORAGE_PROJECT_KEY = "project.lists";
 const LOCAL_STORAGE_LIST_KEY = "task.lists";
+const editId = { id: "" };
 
 let projectsList = JSON.parse(
   localStorage.getItem(LOCAL_STORAGE_PROJECT_KEY)
 ) || [{ id: "", title: "", tasks: 0 }];
 
 let tasksList = JSON.parse(localStorage.getItem(LOCAL_STORAGE_LIST_KEY)) || [
-  { id: "", title: "", project: "", priority: "", date: "", details: "" },
+  {
+    id: "",
+    title: "",
+    project: "",
+    priority: "",
+    date: "",
+    details: "",
+    completed: false,
+  },
 ];
 
 window.addEventListener(
@@ -41,6 +50,99 @@ function save() {
   localStorage.setItem(LOCAL_STORAGE_LIST_KEY, JSON.stringify(tasksList));
 }
 
+function removeTask(btn) {
+  btn.addEventListener("click", (e) => {
+    const id =
+      e.target.parentNode.parentNode.parentNode.firstChild.firstChild.id;
+
+    tasksList = tasksList.filter((task) => task.id !== id);
+    save();
+    e.target.parentNode.parentNode.parentNode.remove();
+  });
+}
+
+function handleChecked(checkbox) {
+  checkbox.addEventListener("click", (e) => {
+    const id = e.target.id;
+    const settings = e.target.parentNode.parentNode.lastChild;
+
+    for (let i = 0; i < tasksList.length; i++) {
+      if (tasksList[i].id === id) {
+        tasksList[i].completed = !tasksList[i].completed;
+        if (tasksList[i].completed) {
+          settings.style.opacity = `0.5`;
+        } else {
+          settings.style.opacity = `1`;
+        }
+      }
+    }
+    save();
+  });
+}
+
+function handleEdit(confirm, title, details, date, low, medium, high) {
+  confirm.addEventListener("click", (e) => {
+    e.preventDefault();
+
+    const regex = /^\s*$/;
+
+    if (title.value === "") return;
+    if (regex.test(title.value)) return;
+    if (date.value === "") return;
+
+    const idTask = editId.id;
+    const task = title.value.trim().replace(/<|>/g, ``);
+    const projectName = "General";
+    const description = details.value.trim();
+    const dueDate = date.value;
+    const formatDate = format(parseISO(dueDate), "MMM do");
+    let priorityTask = "";
+
+    if (low.classList.contains("active")) {
+      priorityTask = "low-priority";
+    }
+
+    if (medium.classList.contains("active")) {
+      priorityTask = "medium-priority";
+    }
+
+    if (high.classList.contains("active")) {
+      priorityTask = "high-priority";
+    }
+
+    if (priorityTask === "") return;
+
+    for (let i = 0; i < tasksList.length; i++) {
+      if (tasksList[i].id === idTask) {
+        tasksList[i].title = task;
+        tasksList[i].project = projectName;
+        tasksList[i].details = description;
+        tasksList[i].date = dueDate;
+        tasksList[i].priority = priorityTask;
+      }
+    }
+    save();
+    updateTask(idTask, task, formatDate, priorityTask);
+    closeEditModal();
+  });
+}
+
+function updateTask(id, title, date, priority) {
+  const taskItem = document.getElementById(id);
+  const taskItemTitle = taskItem.parentNode.lastChild;
+  const taskItemDate =
+    taskItem.parentNode.parentNode.lastChild.firstChild.nextSibling;
+  const taskItemPriority = taskItem.parentNode.parentNode;
+
+  taskItemTitle.innerHTML = `<span class="custom-checkbox"></span>
+  ${title}`;
+  taskItemDate.textContent = date;
+  taskItemPriority.classList.remove("low-priority");
+  taskItemPriority.classList.remove("medium-priority");
+  taskItemPriority.classList.remove("high-priority");
+  taskItemPriority.classList.add(priority);
+}
+
 function handleCreateTask(button, title, details, date, low, medium, high) {
   button.addEventListener("click", (e) => {
     e.preventDefault();
@@ -51,11 +153,11 @@ function handleCreateTask(button, title, details, date, low, medium, high) {
     if (date.value === "") return;
 
     const idTask = Date.now().toString();
-    const task = title.value.trim();
+    const task = title.value.trim().replace(/<|>/g, ``);
     const projectName = "General";
     const description = details.value.trim();
     const dueDate = date.value;
-    const formatDate = format(parseISO(dueDate), "MMM dd");
+    const formatDate = format(parseISO(dueDate), "MMM do");
     let priorityTask = "";
 
     if (low.classList.contains("active")) {
@@ -79,10 +181,11 @@ function handleCreateTask(button, title, details, date, low, medium, high) {
       priority: priorityTask,
       date: dueDate,
       details: description,
+      completed: false,
     });
 
     save();
-    renderTask(idTask, task, formatDate, priorityTask);
+    renderTask(idTask, task, formatDate, priorityTask, false);
     closeAddModal();
   });
 }
@@ -93,8 +196,9 @@ function renderTasksList() {
       renderTask(
         tasksList[i].id,
         tasksList[i].title,
-        tasksList[i].date,
-        tasksList[i].priority
+        format(parseISO(tasksList[i].date), "MMM do"),
+        tasksList[i].priority,
+        tasksList[i].completed
       );
     }
   }
@@ -198,11 +302,37 @@ function closeNavigation(overlay) {
 }
 
 function openDetails(btn) {
-  btn.addEventListener("click", () => {
+  btn.addEventListener("click", (e) => {
     const modal = document.querySelector("[data-modal-details]");
     const overlay = document.querySelector("[data-overlay]");
     modal.classList.add("active");
     overlay.classList.add("active");
+
+    const title = document.querySelector("[data-details-title]");
+    const project = document.querySelector("[data-details-project]");
+    const priority = document.querySelector("[data-details-priority]");
+    const date = document.querySelector("[data-details-date]");
+    const description = document.querySelector("[data-details-description]");
+    const id = e.target.parentNode.parentNode.firstChild.firstChild.id;
+
+    for (let i = 0; i < tasksList.length; i++) {
+      if (tasksList[i].id === id) {
+        const formatedDate = format(
+          parseISO(tasksList[i].date),
+          "MMMM do yyyy"
+        );
+        const string = tasksList[i].priority.split("-");
+        const first = string[0].charAt(0).toUpperCase();
+        const rest = string[0].slice(1);
+        const formatedPriority = first + rest;
+
+        title.textContent = tasksList[i].title;
+        project.textContent = tasksList[i].project;
+        priority.textContent = formatedPriority;
+        date.textContent = formatedDate;
+        description.textContent = tasksList[i].details;
+      }
+    }
   });
 }
 
@@ -216,20 +346,51 @@ function closeDetails(btn) {
 }
 
 function openEdit(btn) {
-  btn.addEventListener("click", () => {
+  btn.addEventListener("click", (e) => {
     const modal = document.querySelector("[data-modal-edit]");
     const overlay = document.querySelector("[data-overlay]");
     modal.classList.add("active");
     overlay.classList.add("active");
-  });
-}
 
-function closeEdit(btn) {
-  btn.addEventListener("click", () => {
-    const modal = document.querySelector("[data-modal-edit]");
-    const overlay = document.querySelector("[data-overlay]");
-    modal.classList.remove("active");
-    overlay.classList.remove("active");
+    const title = document.querySelector("[data-edit-title]");
+    const description = document.querySelector("[data-edit-description]");
+    const date = document.querySelector("[data-edit-date]");
+    const low = document.querySelector("[data-edit-low]");
+    const medium = document.querySelector("[data-edit-medium]");
+    const high = document.querySelector("[data-edit-high]");
+    const id =
+      e.target.parentNode.parentNode.parentNode.firstChild.firstChild.id;
+
+    editId.id = id;
+
+    for (let i = 0; i < tasksList.length; i++) {
+      if (tasksList[i].id === id) {
+        title.value = tasksList[i].title;
+        description.value = tasksList[i].details;
+        date.value = tasksList[i].date;
+
+        if (tasksList[i].priority === "low-priority") {
+          low.classList.remove("active");
+          medium.classList.remove("active");
+          high.classList.remove("active");
+          low.classList.add("active");
+        }
+
+        if (tasksList[i].priority === "medium-priority") {
+          low.classList.remove("active");
+          medium.classList.remove("active");
+          high.classList.remove("active");
+          medium.classList.add("active");
+        }
+
+        if (tasksList[i].priority === "high-priority") {
+          low.classList.remove("active");
+          medium.classList.remove("active");
+          high.classList.remove("active");
+          high.classList.add("active");
+        }
+      }
+    }
   });
 }
 
@@ -269,6 +430,12 @@ function closeAdd(btn) {
   });
 }
 
+function closeEdit(btn) {
+  btn.addEventListener("click", () => {
+    closeEditModal();
+  });
+}
+
 function closeAddModal() {
   const modal = document.querySelector("[data-modal-add]");
   const overlay = document.querySelector("[data-overlay]");
@@ -282,6 +449,13 @@ function closeAddModal() {
     project.classList.remove("active");
     todo.classList.add("active");
   }
+}
+
+function closeEditModal() {
+  const modal = document.querySelector("[data-modal-edit]");
+  const overlay = document.querySelector("[data-overlay]");
+  modal.classList.remove("active");
+  overlay.classList.remove("active");
 }
 
 function initialize() {
@@ -305,5 +479,8 @@ export {
   closeNavigation,
   createProject,
   handleCreateTask,
+  handleEdit,
+  handleChecked,
   selectPriority,
+  removeTask,
 };

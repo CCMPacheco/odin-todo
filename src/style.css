@@ -152,6 +152,14 @@ body {
   font-weight: 300;
 }
 
+[data-empty-inbox] {
+  color: var(--clr-contrast);
+  font-size: 2rem;
+  text-align: center;
+  font-weight: 700;
+  padding-top: 2rem;
+}
+
 .task {
   background-color: var(--clr-lightgray);
   padding: 0.5em 1em;

@@ -1,9 +1,9 @@
 import createListItem from "./listitem.js";
 
-function renderProject(name, count) {
+function renderProject(id, name, count) {
   const ul = document.querySelector("[data-projects-list]");
 
-  ul.appendChild(createListItem(name, count));
+  ul.appendChild(createListItem(id, name, count));
 }
 
 export default renderProject;

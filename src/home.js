@@ -44,10 +44,10 @@ function createNavigation() {
   const ulInbox = document.createElement("ul");
   divFilterInbox.appendChild(ulInbox);
 
-  ulInbox.appendChild(createListItem("Today", 1));
-  ulInbox.appendChild(createListItem("Next 7 days", 2));
-  ulInbox.appendChild(createListItem("Important", 0));
-  ulInbox.appendChild(createListItem("All", 4));
+  ulInbox.appendChild(createListItem("all", "All", 4));
+  ulInbox.appendChild(createListItem("today", "Today", 1));
+  ulInbox.appendChild(createListItem("next", "Next 7 days", 2));
+  ulInbox.appendChild(createListItem("important", "Important", 0));
 
   const divProjects = document.createElement("div");
   divProjects.classList.add("nav-links");
@@ -69,6 +69,7 @@ function createNavigation() {
 function createMainContainer() {
   const tasksContainer = document.createElement("main");
   tasksContainer.classList.add("tasks-container");
+  tasksContainer.dataset.mainContainer = ``;
 
   return tasksContainer;
 }

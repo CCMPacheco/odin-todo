@@ -1,9 +1,10 @@
-function createListItem(name, count) {
+function createListItem(id, name, count) {
   const li = document.createElement("li");
 
   const spanName = document.createElement("span");
   spanName.classList.add("filter-name");
   spanName.dataset.filterNav = ``;
+  spanName.setAttribute("id", id);
   spanName.textContent = name;
   li.appendChild(spanName);
 

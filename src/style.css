@@ -152,14 +152,6 @@ body {
   font-weight: 300;
 }
 
-[data-empty-inbox] {
-  color: var(--clr-contrast);
-  font-size: 2rem;
-  text-align: center;
-  font-weight: 700;
-  padding-top: 2rem;
-}
-
 .task {
   background-color: var(--clr-lightgray);
   padding: 0.5em 1em;
@@ -511,6 +503,21 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   font-size: var(--fs-regular);
   letter-spacing: 1px;
   color: var(--clr-accent-dark);
+}
+
+[data-empty-inbox] {
+  color: var(--clr-contrast);
+  font-size: 2rem;
+  text-align: center;
+  font-weight: 700;
+  padding-top: 2rem;
+}
+
+[data-delete-project] {
+  font-size: 1.5rem;
+  width: 300px;
+  margin-inline: auto;
+  margin-top: 2rem;
 }
 
 @media screen and (max-width: 610px) {

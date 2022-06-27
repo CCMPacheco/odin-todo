@@ -8,11 +8,13 @@ function createListItem(id, name, count) {
   spanName.textContent = name;
   li.appendChild(spanName);
 
-  if (count) {
-    const spanCount = document.createElement("span");
-    spanCount.classList.add("tasks-count");
-    spanCount.textContent = count;
-    li.appendChild(spanCount);
+  const spanCount = document.createElement("span");
+  spanCount.classList.add("tasks-count");
+  spanCount.textContent = count;
+  li.appendChild(spanCount);
+
+  if (count === 0) {
+    spanCount.style.display = `none`;
   }
 
   return li;

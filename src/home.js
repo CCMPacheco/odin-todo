@@ -44,9 +44,9 @@ function createNavigation() {
   const ulInbox = document.createElement("ul");
   divFilterInbox.appendChild(ulInbox);
 
-  ulInbox.appendChild(createListItem("all", "All", 4));
-  ulInbox.appendChild(createListItem("today", "Today", 1));
-  ulInbox.appendChild(createListItem("next", "Next 7 days", 2));
+  ulInbox.appendChild(createListItem("all", "All", 0));
+  ulInbox.appendChild(createListItem("today", "Today", 0));
+  ulInbox.appendChild(createListItem("next", "Next 7 days", 0));
   ulInbox.appendChild(createListItem("important", "Important", 0));
 
   const divProjects = document.createElement("div");

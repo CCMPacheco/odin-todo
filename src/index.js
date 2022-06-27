@@ -11,22 +11,12 @@ import { format, parseISO, addDays, isBefore, isAfter } from "date-fns";
 const LOCAL_STORAGE_PROJECT_KEY = "project.lists";
 const LOCAL_STORAGE_LIST_KEY = "task.lists";
 const editId = { id: "" };
+const active = { link: "" };
 
-let projectsList = JSON.parse(
-  localStorage.getItem(LOCAL_STORAGE_PROJECT_KEY)
-) || [{ id: "", title: "", tasks: 0 }];
+let projectsList =
+  JSON.parse(localStorage.getItem(LOCAL_STORAGE_PROJECT_KEY)) || [];
 
-let tasksList = JSON.parse(localStorage.getItem(LOCAL_STORAGE_LIST_KEY)) || [
-  {
-    id: "",
-    title: "",
-    project: "",
-    priority: "",
-    date: "",
-    details: "",
-    completed: false,
-  },
-];
+let tasksList = JSON.parse(localStorage.getItem(LOCAL_STORAGE_LIST_KEY)) || [];
 
 window.addEventListener(
   "keydown",
@@ -102,6 +92,18 @@ function renderImportant() {
   renderEmptyInbox();
 }
 
+function renderSelectedProject(link) {
+  const project = projectsList.filter((project) => link.id === project.id);
+  const tasks = tasksList.filter((task) => project[0].title === task.project);
+
+  if (tasks.length !== 0) {
+    renderTasksList(tasks);
+    return;
+  }
+
+  renderEmptyProject();
+}
+
 function renderEmptyInbox() {
   const main = document.querySelector("[data-main-container]");
   main.textContent = ``;
@@ -111,6 +113,32 @@ function renderEmptyInbox() {
   p.textContent = `No Tasks`;
 
   main.appendChild(p);
+}
+
+function renderEmptyProject() {
+  const main = document.querySelector("[data-main-container]");
+  main.textContent = ``;
+
+  const p = document.createElement("p");
+  p.dataset.emptyInbox = ``;
+  p.textContent = `No Tasks`;
+
+  const button = document.createElement("button");
+  button.dataset.deleteProject = ``;
+  button.classList.add("btn");
+  button.textContent = `Delete Project`;
+
+  main.appendChild(p);
+  main.appendChild(button);
+
+  button.addEventListener("click", () => {
+    const id = active.link.id;
+    projectsList = projectsList.filter((project) => project.id !== id);
+    save();
+    renderAll();
+    renderProjectsList();
+    handleActiveLink(document.querySelector("[data-filter-nav]"));
+  });
 }
 
 function removeTask(btn) {
@@ -140,6 +168,7 @@ function handleChecked(checkbox) {
       }
     }
     save();
+    renderCount();
   });
 }
 
@@ -155,10 +184,8 @@ function handleEdit(confirm, title, details, date, low, medium, high) {
 
     const idTask = editId.id;
     const task = title.value.trim().replace(/<|>/g, ``);
-    const projectName = "General";
     const description = details.value.trim();
     const dueDate = date.value;
-    const formatDate = format(parseISO(dueDate), "MMM do");
     let priorityTask = "";
 
     if (low.classList.contains("active")) {
@@ -178,14 +205,13 @@ function handleEdit(confirm, title, details, date, low, medium, high) {
     for (let i = 0; i < tasksList.length; i++) {
       if (tasksList[i].id === idTask) {
         tasksList[i].title = task;
-        tasksList[i].project = projectName;
         tasksList[i].details = description;
         tasksList[i].date = dueDate;
         tasksList[i].priority = priorityTask;
       }
     }
     save();
-    renderTasksList(tasksList);
+    selectRenderList();
     closeEditModal();
   });
 }
@@ -201,10 +227,9 @@ function handleCreateTask(button, title, details, date, low, medium, high) {
 
     const idTask = Date.now().toString();
     const task = title.value.trim().replace(/<|>/g, ``);
-    const projectName = "General";
+    let projectName = "General";
     const description = details.value.trim();
     const dueDate = date.value;
-    const formatDate = format(parseISO(dueDate), "MMM do");
     let priorityTask = "";
 
     if (low.classList.contains("active")) {
@@ -221,6 +246,13 @@ function handleCreateTask(button, title, details, date, low, medium, high) {
 
     if (priorityTask === "") return;
 
+    const check = projectsList.filter(
+      (project) => active.link.textContent === project.title
+    );
+    if (check.length !== 0) {
+      projectName = active.link.textContent;
+    }
+
     tasksList.push({
       id: idTask,
       title: task,
@@ -232,9 +264,34 @@ function handleCreateTask(button, title, details, date, low, medium, high) {
     });
 
     save();
-    renderTask(idTask, task, formatDate, priorityTask, false);
+    renderCount();
+    selectRenderList();
     closeAddModal();
   });
+}
+
+function selectRenderList() {
+  if (active.link.id === "all") {
+    renderAll();
+    return;
+  }
+
+  if (active.link.id === "today") {
+    renderToday();
+    return;
+  }
+
+  if (active.link.id === "next") {
+    renderNextSevenDays();
+    return;
+  }
+
+  if (active.link.id === "important") {
+    renderImportant();
+    return;
+  }
+
+  renderSelectedProject(active.link);
 }
 
 function renderTasksList(list) {
@@ -289,6 +346,60 @@ function renderProjectsList() {
   }
 }
 
+function renderCount() {
+  const all = document.getElementById("all");
+  const allCount = tasksList.filter((task) => !task.completed).length;
+
+  getCount(all, allCount);
+
+  const today = document.getElementById("today");
+  const todayDate = format(new Date(), "yyyy-MM-dd");
+  const todayCount = tasksList.filter(
+    (task) => task.date === todayDate && !task.completed
+  ).length;
+
+  getCount(today, todayCount);
+
+  const nextSevenDays = document.getElementById("next");
+  const eight = format(addDays(parseISO(todayDate), 8), "yyyy-MM-dd");
+  const nextSevenDaysCount = tasksList.filter(
+    (task) =>
+      isAfter(parseISO(task.date), parseISO(todayDate)) &&
+      isBefore(parseISO(task.date), parseISO(eight)) &&
+      !task.completed
+  ).length;
+
+  getCount(nextSevenDays, nextSevenDaysCount);
+
+  const important = document.getElementById("important");
+  const importantCount = tasksList.filter(
+    (task) => task.priority === "high-priority" && !task.completed
+  ).length;
+
+  getCount(important, importantCount);
+  projectCount();
+}
+
+function getCount(node, count) {
+  if (count) {
+    node.nextSibling.textContent = count;
+    node.nextSibling.style.display = ``;
+  } else {
+    node.nextSibling.style.display = `none`;
+  }
+}
+
+function projectCount() {
+  for (let i = 0; i < projectsList.length; i++) {
+    const project = document.getElementById(projectsList[i].id);
+    const count = tasksList.filter(
+      (task) => task.project === projectsList[i].title && !task.completed
+    ).length;
+
+    getCount(project, count);
+  }
+}
+
 function handleActiveLink(initial) {
   if (initial) {
     setActiveLink(initial);
@@ -299,6 +410,7 @@ function handleActiveLink(initial) {
   links.forEach((link) => {
     link.addEventListener("click", (e) => {
       setActiveLink(link);
+      renderCount();
     });
   });
 }
@@ -313,6 +425,7 @@ function setActiveLink(link) {
   });
 
   link.classList.add("active");
+  active.link = link;
 
   if (link.textContent === `All`) {
     renderAll();
@@ -334,10 +447,7 @@ function setActiveLink(link) {
     return;
   }
 
-  const project = projectsList.filter((project) => link.id === project.id);
-  const tasks = tasksList.filter((task) => project[0].title === task.project);
-
-  renderTasksList(tasks);
+  renderSelectedProject(link);
 }
 
 function selectPriority(btnLow, btnMedium, btnHigh) {
@@ -545,8 +655,8 @@ function initialize() {
   loadModals();
   renderProjectsList();
   renderTasksList(tasksList);
+  renderCount();
   handleActiveLink(document.querySelector("[data-filter-nav]"));
-  //renderToday();
 }
 
 initialize();
